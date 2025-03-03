@@ -1,4 +1,10 @@
-# Week 2 - Assessment:
+# Assessment:
+    - This repository contains weekly assessment question, answers
+
+## Week 2 - Assessment:
+
+**Question:**
+- [Refer](./week-2/question.md)
 
 **Implementation of Bank machine code:**
 - Goto ./week-2/Bank/
