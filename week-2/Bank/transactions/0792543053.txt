@@ -1,1 +1,0 @@
-[2025-03-03 14:15:09]: Transaction Type: deposit, Account Number: 0792543053, Amount: 2510.0

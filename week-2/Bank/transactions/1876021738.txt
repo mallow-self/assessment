@@ -1,1 +1,0 @@
-[2025-03-03 14:14:39]: Transaction Type: deposit, Account Number: 1876021738, Amount: 1002.0
