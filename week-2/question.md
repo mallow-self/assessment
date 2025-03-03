@@ -63,87 +63,82 @@ while True:
 
 - Your task is to complete the implementation by following these instructions:
 
-Implement the log_transaction decorator function:
+**Implement the log_transaction decorator function:**
 
-Implement the log_transaction decorator function.
+- The decorator should log each transaction to a file named <account_number>.txt inside a folder named "transactions."
 
-The decorator should log each transaction to a file named <account_number>.txt inside a folder named "transactions."
+- Include the transaction type, account number, amount, and timestamp in the format: [timestamp]: Transaction Type: <transaction_type>, Account Number: <account_number>, Amount: <amount>.
 
-Include the transaction type, account number, amount, and timestamp in the format: [timestamp]: Transaction Type: <transaction_type>, Account Number: <account_number>, Amount: <amount>.
+- Create the "transactions" folder if it doesn't exist.
 
-Create the "transactions" folder if it doesn't exist.
+- Append the transaction log to the corresponding account's log file if it exists; otherwise, create a new file.
 
-Append the transaction log to the corresponding account's log file if it exists; otherwise, create a new file.
+**Implement the Account class:**
 
-Implement the Account class:
+- Implement the Account class with the required attributes and methods.
 
-Implement the Account class with the required attributes and methods.
+- Provide functionality for depositing and withdrawing funds.
 
-Provide functionality for depositing and withdrawing funds.
+- Include a method for retrieving the account balance.
 
-Include a method for retrieving the account balance.
+- Implement the SavingsAccount and CheckingAccount classes:
 
-Implement the SavingsAccount and CheckingAccount classes:
+- Implement the SavingsAccount and CheckingAccount classes as subclasses of Account.
 
-Implement the SavingsAccount and CheckingAccount classes as subclasses of Account.
+- SavingsAccount should include functionality for earning interest on deposits.
 
-SavingsAccount should include functionality for earning interest on deposits.
+- CheckingAccount should enforce a transaction limit.
 
-CheckingAccount should enforce a transaction limit.
+**Implement the Bank class:**
 
-Implement the Bank class:
+- Implement the Bank class with methods for adding accounts.
 
-Implement the Bank class with methods for adding accounts.
+- Include methods for retrieving accounts by account number and password.
 
-Include methods for retrieving accounts by account number and password.
+- Add a method for getting the total balance across all accounts.
 
-Add a method for getting the total balance across all accounts.
+**Test the implementation by running the program:**
 
-Test the implementation by running the program:
+- The program should display a menu with the following options:
 
-The program should display a menu with the following options:
+- Create Account: Prompt the user to enter a password, confirm the password, and select the account type (savings or checking). Collect the below details based on the account type. After successful account creation, display the account number to the user.
 
-Create Account: Prompt the user to enter a password, confirm the password, and select the account type (savings or checking). Collect the below details based on the account type. After successful account creation, display the account number to the user.
+- Additional Details for Saving account
+    - Interest rate
+    - IFSC code
+    - Joint account - Yes/No
+- Additional Details for checking account
+    - Minimum balance
+    - IFSC code
 
-Additional Details for Saving account
+- Deposit: Prompt the user to enter the account number, password, and deposit amount. If the account is valid, deposit the specified amount into the account and log the transaction.
 
-Interest rate
+- Withdraw: Prompt the user to enter the account number, password, and withdrawal amount. If the account is valid and has sufficient funds, withdraw the specified amount from the account and log the transaction.
 
-IFSC code
+- View Balance: Prompt the user to enter the account number and password. If the account is valid, display the current account balance.
 
-Joint account - Yes/No
+- Exit: Terminate the program.
 
-Additional Details for checking account
+- Ensure proper error handling and display appropriate error messages for invalid inputs, insufficient funds, incorrect passwords, etc.
 
-Minimum balance
+---
 
-IFSC code
+## Question 2:
 
-Deposit: Prompt the user to enter the account number, password, and deposit amount. If the account is valid, deposit the specified amount into the account and log the transaction.
+**Sql test :**
+*Instructions:*
 
-Withdraw: Prompt the user to enter the account number, password, and withdrawal amount. If the account is valid and has sufficient funds, withdraw the specified amount from the account and log the transaction.
+- Import the given dump file into MySQL Workbench.
+    - [File](./sql/sql_batch_training.sql)
 
-View Balance: Prompt the user to enter the account number and password. If the account is valid, display the current account balance.
+- After importing, navigate to the "schemas" tab to find the "ecommerce" schema.
 
-Exit: Terminate the program.
+- Write SQL queries to retrieve specific details from the database.
 
-Ensure proper error handling and display appropriate error messages for invalid inputs, insufficient funds, incorrect passwords, etc.
+*Questions:*
 
-Question 2:
+1. Find the late orders.
 
-Sql test :
-Instructions:
+2. List orders from Paris placed between April 2003 to June 2003 along with their customer details.
 
-Import the given dump file into MySQL Workbench.
-
-After importing, navigate to the "schemas" tab to find the "ecommerce" schema.
-
-Write SQL queries to retrieve specific details from the database.
-
-Questions:
-
-Find the late orders.
-
-List orders from Paris placed between April 2003 to June 2003 along with their customer details.
-
-Identify the top 5 customers who have made the highest purchases (generated the highest revenue).
+3. Identify the top 5 customers who have made the highest purchases (generated the highest revenue).
