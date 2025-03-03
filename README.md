@@ -1,5 +1,5 @@
 # Assessment:
-    - This repository contains weekly assessment question, answers
+- This repository contains weekly assessment question, answers
 
 ## Week 2 - Assessment:
 
