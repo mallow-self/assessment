@@ -1,5 +1,6 @@
 .select2-container {
     width: 100% !important;
+    font-size: 13px !important;
 }
 
 #profileErr {
@@ -50,8 +51,7 @@ form input {
 #removeProfile,
 #name,
 #email,
-#dob,
-#language {
+#dob{
     font-size: 13px;
     padding: 5px 10px;
 }
@@ -72,5 +72,4 @@ form input {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    /* Make sure it takes full height */
 }
