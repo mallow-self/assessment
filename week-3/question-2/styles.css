@@ -31,3 +31,46 @@
     font-size: small;
     display: none;
 }
+
+.title {
+    color: #1c9fe0;
+    font-size: 2vw;
+}
+
+form label,
+form input {
+    font-size: 13px;
+}
+
+#profile {
+    font-size: 13px;
+    padding: 5px;
+}
+
+#removeProfile,
+#name,
+#email,
+#dob,
+#language {
+    font-size: 13px;
+    padding: 5px 10px;
+}
+
+.subbtn {
+    font-size: 13px;
+    padding: 5px 10px;
+}
+
+.card {
+    width: 500px;
+    border: 2px solid rgb(0, 115, 255);
+    border-radius: 0%;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    /* Make sure it takes full height */
+}

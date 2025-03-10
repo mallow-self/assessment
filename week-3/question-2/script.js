@@ -1,5 +1,4 @@
 function validation() {
-    alert("Validation Starts");
     let profile = document.getElementById("profile");
     let name = document.getElementById("name").value;
     let email = document.getElementById("email").value;
@@ -87,7 +86,6 @@ function validation() {
 
     // let dict = [profile,name,email,dob,gender.value,lang];
     // alert(JSON.stringify(dict, null, 2));
-    alert("Validation Ends!");
 
     if(isValid){
         return true;
