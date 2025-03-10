@@ -1,0 +1,33 @@
+.select2-container {
+    width: 100% !important;
+}
+
+#profileErr {
+    font-size: small;
+    display: none;
+}
+
+#nameErr {
+    font-size: small;
+    display: none;
+}
+
+#emailErr {
+    font-size: small;
+    display: none;
+}
+
+#dobErr {
+    font-size: small;
+    display: none;
+}
+
+#genderErr {
+    font-size: small;
+    display: none;
+}
+
+#langErr {
+    font-size: small;
+    display: none;
+}
