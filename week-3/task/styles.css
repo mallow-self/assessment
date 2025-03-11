@@ -1,0 +1,15 @@
+.side-1 {
+    border: 2px solid black;
+
+}
+
+.side-2 {
+    border-right: 2px solid black;
+    border-top: 2px solid black;
+    border-bottom: 2px solid black;
+}
+
+.side-3 {
+    border-top: 2px solid black;
+    border-bottom: 2px solid black;
+}
