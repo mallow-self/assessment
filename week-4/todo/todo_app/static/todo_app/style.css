@@ -1,3 +1,19 @@
-.headings{
-    color:red;
+a {
+    text-decoration: none;
+}
+
+.headings {
+    text-align: left;
+    color: #506567;
+}
+.addButton{
+    text-align: end;
+}
+
+.titleContainer{
+    padding: 15px;
+}
+
+.container{
+    border:solid #506567;
 }

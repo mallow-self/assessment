@@ -35,3 +35,6 @@
     ```
 7. changed timezone
 8. Added template,table,css and js for the list page
+9. Done read,delete,create,update
+10. css adding
+11. 

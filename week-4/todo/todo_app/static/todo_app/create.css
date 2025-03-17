@@ -1,3 +1,12 @@
-.title{
-    color:red;
+.headings {
+    text-align: center;
+    color: #506567;
+}
+
+.formContainer {
+    border: black solid;
+}
+
+.formContainer form {
+    padding: 10px;
 }
