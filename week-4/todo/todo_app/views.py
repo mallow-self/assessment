@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
 from .models import Todo
 
@@ -47,3 +47,20 @@ def create_todo(request):
 
 def create(request):
     return render(request,"todo_app/create.html")
+
+
+def delete_todo(request, todo_id):
+    todo = get_object_or_404(Todo, todo_id=todo_id)
+
+    if request.method == "POST":
+        try:
+            todo.delete()
+            return JsonResponse(
+                {"message": "Todo deleted successfully", "reload": True}
+            )
+        except Exception as e:
+            return JsonResponse({"server-error": f"{e}"})
+
+    return JsonResponse({"error": "Invalid request"}, status=400)
+
+
