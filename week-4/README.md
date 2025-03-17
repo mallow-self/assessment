@@ -14,3 +14,8 @@
     - `python3 manage.py runserver`
 
 ---
+## Notes:
+1. create a app inside the django project
+2. Add it in settings
+3. Set up initial app,urls,views,settings
+4. Make and migrate
