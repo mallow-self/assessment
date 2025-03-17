@@ -1,3 +1,22 @@
+/**
+ * Fetches and displays the list of to-do entries in a table.
+ *
+ * This function runs when the DOM content is fully loaded. It sends a request 
+ * to the "/todos" endpoint to retrieve a list of to-do items. The received data 
+ * is used to populate an HTML table with columns for count, title, priority level, 
+ * due date, status, and action buttons (edit and delete).
+ *
+ * Each row contains:
+ * - A serial number.
+ * - Title of the to-do item.
+ * - Priority level.
+ * - Due date.
+ * - Status.
+ * - An edit button linking to the item's edit page.
+ * - A delete button that calls the `deleteTodo` function with the item's ID.
+ *
+ * If the fetch request fails, an error message is logged in the console.
+ */
 document.addEventListener("DOMContentLoaded", function () {
     fetch("/todos")  // Adjust the endpoint accordingly
         .then(response => response.json())
@@ -34,12 +53,28 @@ document.addEventListener("DOMContentLoaded", function () {
         .catch(error => console.error("Error fetching entries:", error));
 });
 
+
+/**
+ * Deletes a to-do item after user confirmation.
+ *
+ * This function prompts the user with a confirmation dialog before proceeding with deletion. 
+ * If the user confirms, it sends a POST request to the server to delete the specified to-do item.
+ *
+ * @param {number} todoId - The unique identifier of the to-do item to be deleted.
+ *
+ * Functionality:
+ * - Displays a confirmation alert before deletion.
+ * - Sends a POST request to `/delete/{todoId}/` with the CSRF token in the headers.
+ * - If the server responds with a success message, an alert is displayed, and the page reloads.
+ * - If an error occurs, an error message is shown.
+ * - Logs any fetch errors to the console.
+ */
 function deleteTodo(todoId) {
     if (!confirm("Are you sure you want to delete this task?")) return;
 
     fetch(`/delete/${todoId}/`, {
         method: "POST",
-        headers: { "X-CSRFToken": getCSRFToken() } // Get CSRF token
+        headers: { "X-CSRFToken": getCSRFToken() } 
     })
         .then(response => response.json())
         .then(data => {

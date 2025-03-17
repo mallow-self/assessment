@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpRequest, HttpResponseRedirect, HttpResponse
 from .models import Todo
+from typing import Dict, Any, Union
 
 
 # Create your views here.
-def list_todo(request):
+def list_todo(request: HttpRequest) -> HttpRequest:
     """Render the to-do list page.
 
     Args:
@@ -16,7 +17,7 @@ def list_todo(request):
     return render(request, "todo_app/index.html")
 
 
-def get_todos(request):
+def get_todos(request: HttpRequest) -> JsonResponse:
     """Fetch and return a list of to-do items in JSON format.
 
     Args:
@@ -26,9 +27,8 @@ def get_todos(request):
         JsonResponse: A JSON response containing a list of to-do items with
         their details such as ID, title, priority, due date, status, and timestamps.
     """
-    todo_data = list(
-        Todo.objects.all()
-        .values(
+    todo_data: list[Dict[str, Any]] = list(
+        Todo.objects.all().values(
             "todo_id",
             "title",
             "priority_level",
@@ -37,13 +37,12 @@ def get_todos(request):
             "created_at",
             "updated_at",
         )
-        .order_by("-created_at")
     )
-    responseData = {"todo": todo_data}
+    responseData: Dict[str, list[Dict[str, Any]]] = {"todo": todo_data}
     return JsonResponse(responseData)
 
 
-def create_todo(request):
+def create_todo(request: HttpRequest) -> JsonResponse | HttpResponseRedirect:
     """Handle the creation of a new to-do item.
 
     This function processes a POST request to create a new to-do item
@@ -61,10 +60,10 @@ def create_todo(request):
     """
     if request.method == "POST":
         try:
-            title = request.POST.get("title")
-            priority_level = request.POST.get("priority_level")
-            due_date = request.POST.get("due_date")
-            status = request.POST.get("status")
+            title: str | None = request.POST.get("title")
+            priority_level: str | None = request.POST.get("priority_level")
+            due_date: str | None = request.POST.get("due_date")
+            status: str | None = request.POST.get("status")
 
             if not all([title, priority_level, due_date, status]):
                 return JsonResponse({"error": "All fields are required"}, status=400)
@@ -84,7 +83,7 @@ def create_todo(request):
     return JsonResponse({"error": "Invalid request"}, status=400)
 
 
-def create(request):
+def create(request: HttpRequest) -> HttpResponse:
     """Render the to-do creation page.
 
     Args:
@@ -96,7 +95,7 @@ def create(request):
     return render(request, "todo_app/create.html")
 
 
-def delete_todo(request, todo_id):
+def delete_todo(request: HttpRequest, todo_id: int) -> JsonResponse:
     """Delete a specific to-do item.
 
     This function retrieves a to-do item by its ID and deletes it if the
@@ -126,7 +125,7 @@ def delete_todo(request, todo_id):
     return JsonResponse({"error": "Invalid request"}, status=400)
 
 
-def edit(request, todo_id):
+def edit(request: HttpRequest, todo_id: int) -> HttpResponse:
     """Render the to-do edit page with existing details.
 
     This function retrieves a to-do item by its ID and prepares the context
@@ -140,8 +139,8 @@ def edit(request, todo_id):
         HttpResponse: The rendered HTML page with the to-do item's details.
     """
     todo = get_object_or_404(Todo, todo_id=todo_id)
-    due_date_str = todo.due_date.strftime("%Y-%m-%d") if todo.due_date else ""
-    context = {
+    due_date_str: str = todo.due_date.strftime("%Y-%m-%d") if todo.due_date else ""
+    context: Dict[str, Any] = {
         "todo_id": todo.todo_id,
         "title": todo.title,
         "priority_level": todo.priority_level,
@@ -151,7 +150,7 @@ def edit(request, todo_id):
     return render(request, "todo_app/edit.html", context)
 
 
-def update_todo(request, todo_id):
+def update_todo(request: HttpRequest, todo_id: int) -> Union[JsonResponse, HttpResponse]:
     """Update an existing to-do item.
 
     This function processes a POST request to update the details of a
@@ -172,10 +171,10 @@ def update_todo(request, todo_id):
 
     if request.method == "POST":
         try:
-            title = request.POST.get("title")
-            priority_level = request.POST.get("priority_level")
-            due_date = request.POST.get("due_date")
-            status = request.POST.get("status")
+            title: str = request.POST.get("title")
+            priority_level: str = request.POST.get("priority_level")
+            due_date: str = request.POST.get("due_date")
+            status: str = request.POST.get("status")
 
             if not all([title, priority_level, due_date, status]):
                 return JsonResponse({"error": "All fields are required"}, status=400)
