@@ -16,7 +16,6 @@ def list_todo(request: HttpRequest) -> HttpRequest:
     """
     return render(request, "todo_app/index.html")
 
-
 def get_todos(request: HttpRequest) -> JsonResponse:
     """Fetch and return a list of to-do items in JSON format.
 
@@ -27,20 +26,22 @@ def get_todos(request: HttpRequest) -> JsonResponse:
         JsonResponse: A JSON response containing a list of to-do items with
         their details such as ID, title, priority, due date, status, and timestamps.
     """
-    todo_data: list[Dict[str, Any]] = list(
-        Todo.objects.all().values(
-            "todo_id",
-            "title",
-            "priority_level",
-            "due_date",
-            "status",
-            "created_at",
-            "updated_at",
+    try:
+        todo_data: list[Dict[str, Any]] = list(
+            Todo.objects.all().values(
+                "todo_id",
+                "title",
+                "priority_level",
+                "due_date",
+                "status",
+                "created_at",
+                "updated_at",
+            )
         )
-    )
-    responseData: Dict[str, list[Dict[str, Any]]] = {"todo": todo_data}
-    return JsonResponse(responseData)
-
+        responseData: Dict[str, list[Dict[str, Any]]] = {"todo": todo_data}
+        return JsonResponse(responseData)
+    except Exception as e:
+        return JsonResponse({"Exception Occurred:":f"{e}"})
 
 def create_todo(request: HttpRequest) -> JsonResponse | HttpResponseRedirect:
     """Handle the creation of a new to-do item.
@@ -82,7 +83,6 @@ def create_todo(request: HttpRequest) -> JsonResponse | HttpResponseRedirect:
 
     return JsonResponse({"error": "Invalid request"}, status=400)
 
-
 def create(request: HttpRequest) -> HttpResponse:
     """Render the to-do creation page.
 
@@ -93,7 +93,6 @@ def create(request: HttpRequest) -> HttpResponse:
         HttpResponse: The rendered HTML page for creating a new to-do item.
     """
     return render(request, "todo_app/create.html")
-
 
 def delete_todo(request: HttpRequest, todo_id: int) -> JsonResponse:
     """Delete a specific to-do item.
@@ -124,8 +123,7 @@ def delete_todo(request: HttpRequest, todo_id: int) -> JsonResponse:
 
     return JsonResponse({"error": "Invalid request"}, status=400)
 
-
-def edit(request: HttpRequest, todo_id: int) -> HttpResponse:
+def edit(request: HttpRequest, todo_id: int) -> HttpResponse | JsonResponse:
     """Render the to-do edit page with existing details.
 
     This function retrieves a to-do item by its ID and prepares the context
@@ -138,17 +136,19 @@ def edit(request: HttpRequest, todo_id: int) -> HttpResponse:
     Returns:
         HttpResponse: The rendered HTML page with the to-do item's details.
     """
-    todo = get_object_or_404(Todo, todo_id=todo_id)
-    due_date_str: str = todo.due_date.strftime("%Y-%m-%d") if todo.due_date else ""
-    context: Dict[str, Any] = {
-        "todo_id": todo.todo_id,
-        "title": todo.title,
-        "priority_level": todo.priority_level,
-        "due_date": due_date_str,
-        "status": todo.status,
-    }
-    return render(request, "todo_app/edit.html", context)
-
+    try:
+        todo = get_object_or_404(Todo, todo_id=todo_id)
+        due_date_str: str = todo.due_date.strftime("%Y-%m-%d") if todo.due_date else ""
+        context: Dict[str, Any] = {
+            "todo_id": todo.todo_id,
+            "title": todo.title,
+            "priority_level": todo.priority_level,
+            "due_date": due_date_str,
+            "status": todo.status,
+        }
+        return render(request, "todo_app/edit.html", context)
+    except Exception as e:
+        return JsonResponse({"Exception Occurred:": f"{e}"})
 
 def update_todo(request: HttpRequest, todo_id: int) -> Union[JsonResponse, HttpResponse]:
     """Update an existing to-do item.
