@@ -19,3 +19,19 @@
 2. Add it in settings
 3. Set up initial app,urls,views,settings
 4. Make and migrate
+5. create a todo table model and migrate
+6. create a super user
+    ```
+        > python3 manage.py createsuperuser
+        Username (leave blank to use 'rishicollinz'): admin
+        Email address: admin@gmail.com
+        Password: 123
+        Password (again): 123
+        This password is too short. It must contain at least 8 characters.
+        This password is too common.
+        This password is entirely numeric.
+        Bypass password validation and create user anyway? [y/N]: y
+        Superuser created successfully.
+    ```
+7. changed timezone
+8. Added template,table,css and js for the list page
