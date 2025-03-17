@@ -38,6 +38,18 @@ def get_todos(request: HttpRequest) -> JsonResponse:
                 "updated_at",
             )
         )
+        
+        priority_map = {"low": "Low", "medium": "Medium", "high": "High"}
+        status_map = {
+            "pending": "Pending",
+            "in-progress": "In Progress",
+            "completed": "Completed",
+            "overdue": "Overdue",
+        }
+        for todo in todo_data:
+            todo["priority_level"] = priority_map.get(todo.get("priority_level"), todo.get("priority_level"))
+            todo["status"] = status_map.get(todo.get("status"), todo.get("status"))
+                
         responseData: Dict[str, list[Dict[str, Any]]] = {"todo": todo_data}
         return JsonResponse(responseData)
     except Exception as e:
