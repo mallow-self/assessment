@@ -29,3 +29,6 @@
     - whether the user enters a valid email.
     - whether the user enters a dob within the current date.
     - whether the user selects a gender and preferred language.
+
+## Week 4 - Assessment:
+- [Refer](./week-4/README.md)
