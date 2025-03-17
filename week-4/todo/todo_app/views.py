@@ -38,9 +38,9 @@ def get_todos(request: HttpRequest) -> JsonResponse:
                 "updated_at",
             )
         )
-        
-        priority_map = {"low": "Low", "medium": "Medium", "high": "High"}
-        status_map = {
+
+        priority_map: Dict[str:str] = {"low": "Low", "medium": "Medium", "high": "High"}
+        status_map: Dict[str:str] = {
             "pending": "Pending",
             "in-progress": "In Progress",
             "completed": "Completed",
