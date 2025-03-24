@@ -34,7 +34,7 @@ async def get_todos(request: HttpRequest) -> JsonResponse:
         filters = Q()
         if search:
             # Match title starting with search value
-            filters &= Q(title__startswith=search)
+            filters &= Q(title__icontains=search)
         if priority_filter:
             # Match priority level
             filters &= Q(priority_level=priority_filter)
