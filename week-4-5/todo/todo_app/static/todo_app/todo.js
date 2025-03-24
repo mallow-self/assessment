@@ -1,4 +1,5 @@
 $(document).ready(function () {
+
     $("#todoForm").on("submit", function (event) {
         if (!validation()) {
             event.preventDefault(); // Prevent form submission
@@ -7,7 +8,7 @@ $(document).ready(function () {
     // Fetch To-Do List from Backend
     function fetchTodos() {
         $.ajax({
-            url: "/dfindex/todos/", // Your API endpoint
+            url: "/todos/",
             method: "GET",
             dataType: "json",
             success: function (response) {
@@ -59,7 +60,7 @@ $(document).ready(function () {
 
         if (confirm("Are you sure you want to delete this task?")){
             $.ajax({
-                url: `/dfindex/delete/${todoId}/`,
+                url: `/delete/${todoId}/`,
                 method: "DELETE",
                 headers: { "X-CSRFToken": csrfToken },
                 success: function () {
@@ -82,7 +83,7 @@ $(document).ready(function () {
 
         // Fetch task details using AJAX
         $.ajax({
-            url: `/dfindex/get_todo_update/${todoId}/`, // API to fetch task details
+            url: `/get_todo_update/${todoId}/`, // API to fetch task details
             method: "GET",
             dataType: "json",
             success: function (response) {
@@ -120,7 +121,7 @@ $(document).ready(function () {
 
         // Send update request
         $.ajax({
-            url: `/update/${todoId}/`,  // Your update API
+            url: `/update/${todoId}/`, 
             method: "POST",
             headers: { "X-CSRFToken": csrfToken },
             data: updatedData,
@@ -135,6 +136,7 @@ $(document).ready(function () {
         });
     });
 });
+
 
 /**
  * Validates the form inputs before submission.
