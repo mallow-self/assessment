@@ -59,7 +59,7 @@ $(document).ready(function () {
 
         if (confirm("Are you sure you want to delete this task?")){
             $.ajax({
-                url: `/delete/${todoId}/`,
+                url: `/dfindex/delete/${todoId}/`,
                 method: "DELETE",
                 headers: { "X-CSRFToken": csrfToken },
                 success: function () {
@@ -75,6 +75,65 @@ $(document).ready(function () {
     function getCSRFToken() {
         return $('input[name="csrfmiddlewaretoken"]').val();
     }
+
+    // Handle Update Task
+    $(document).on("click", ".update-btn", function () {
+        let todoId = $(this).data("id");
+
+        // Fetch task details using AJAX
+        $.ajax({
+            url: `/dfindex/get_todo_update/${todoId}/`, // API to fetch task details
+            method: "GET",
+            dataType: "json",
+            success: function (response) {
+                // Populate modal fields
+                $("#updateTodoId").val(response.todo_id);
+                $("#updateTitle").val(response.title);
+                $("#updatePriority").val(response.priority_level.toLowerCase());
+                $("#updateDueDate").val(response.due_date);
+                $("#updateStatus").val(response.status.toLowerCase());
+
+                // Show modal
+                $("#updateModal").modal("show");
+            },
+            error: function (error) {
+                console.log("Error fetching task:", error);
+            }
+        });
+    });
+
+    $("#saveUpdateBtn").on("click", function () {
+        let csrfToken = getCSRFToken();
+        let todoId = $("#updateTodoId").val();
+        let updatedData = {
+            title: $("#updateTitle").val(),
+            priority_level: $("#updatePriority").val(),
+            due_date: $("#updateDueDate").val(),
+            status: $("#updateStatus").val(),
+        };
+
+        // Check for empty fields before making the request
+        if (!updatedData.title || !updatedData.priority_level || !updatedData.due_date || !updatedData.status) {
+            alert("All fields are required!");
+            return;
+        }
+
+        // Send update request
+        $.ajax({
+            url: `/update/${todoId}/`,  // Your update API
+            method: "POST",
+            headers: { "X-CSRFToken": csrfToken },
+            data: updatedData,
+            success: function () {
+                $("#updateModal").modal("hide");  // Hide modal after update
+                fetchTodos();  // Refresh the list
+            },
+            error: function (xhr) {
+                let errorMessage = xhr.responseJSON?.error || "An error occurred!";
+                alert(errorMessage); // Show error message
+            }
+        });
+    });
 });
 
 /**

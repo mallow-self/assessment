@@ -1,3 +1,5 @@
+from django.shortcuts import get_object_or_404
+from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse, HttpRequest, HttpResponseRedirect, HttpResponse
 from .models import Todo
@@ -253,7 +255,7 @@ def update_todo(request: HttpRequest, todo_id: int) -> Union[JsonResponse, HttpR
             todo.status = status
             todo.save()
 
-            return redirect("todo:list")
+            return redirect("todo:dfindex")
         except Exception as e:
             return JsonResponse({"server-error": f"{e}"}, status=500)
 
@@ -265,7 +267,7 @@ async def todo_form(request: HttpRequest):
         form = TodoForm(request.POST)
         if form.is_valid():
             await sync_to_async(form.save)()
-            return JsonResponse({"message": "Successfully created form"})
+            return redirect('todo:dfindex')
         else:
             return JsonResponse({"message": "Invalid data", "errors": form.errors}, status=400)
     form = TodoForm()
@@ -278,10 +280,20 @@ async def dfindex(request):
         form = TodoForm(request.POST)
         if form.is_valid():
             await sync_to_async(form.save)()
-            redirect('todo_app/todo.html')
+            return redirect('todo:dfindex')
         else:
             return JsonResponse({"message": "Invalid data", "errors": form.errors}, status=400)
     form = TodoForm()
     context = {"form": form}
     # Render asynchronously
     return await sync_to_async(render)(request, "todo_app/todo.html", context=context)
+
+def get_todo_update(request, todo_id):
+    todo = get_object_or_404(Todo, pk=todo_id)
+    return JsonResponse({
+        "todo_id": todo.todo_id,
+        "title": todo.title,
+        "priority_level": todo.priority_level,
+        "due_date": str(todo.due_date),
+        "status": todo.status
+    })

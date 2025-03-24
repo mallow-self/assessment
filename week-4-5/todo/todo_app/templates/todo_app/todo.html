@@ -66,3 +66,50 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="{% static "todo_app/todo.js" %}"></script>
 {% endblock jslink %}
+
+{% block modalForm %}
+<div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateModalLabel">Update Task</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="updateForm">
+                    <input type="hidden" id="updateTodoId">
+                    <div class="mb-3">
+                        <label for="updateTitle" class="form-label">Title</label>
+                        <input type="text" class="form-control" id="updateTitle" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="updatePriority" class="form-label">Priority</label>
+                        <select class="form-control" id="updatePriority">
+                            <option value="high">High</option>
+                            <option value="medium">Medium</option>
+                            <option value="low">Low</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="updateDueDate" class="form-label">Due Date</label>
+                        <input type="date" class="form-control" id="updateDueDate">
+                    </div>
+                    <div class="mb-3">
+                        <label for="updateStatus" class="form-label">Status</label>
+                        <select class="form-control" id="updateStatus">
+                            <option value="pending">Pending</option>
+                            <option value="in-progress">In Progress</option>
+                            <option value="completed">Completed</option>
+                            <option value="overdue">Overdue</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="saveUpdateBtn">Save Changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock modalForm %}
