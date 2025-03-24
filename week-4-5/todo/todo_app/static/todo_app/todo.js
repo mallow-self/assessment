@@ -6,9 +6,9 @@ $(document).ready(function () {
         }
     });
     // Fetch To-Do List from Backend
-    function fetchTodos() {
+    function fetchTodos(search = "", filter = "") {
         $.ajax({
-            url: "/todos/",
+            url: `/todos?search=${search}&filter=${filter}`,
             method: "GET",
             dataType: "json",
             success: function (response) {
@@ -49,6 +49,20 @@ $(document).ready(function () {
             }
         });
     }
+
+    //search-bar
+    $('#search-bar').on("input",function(){
+        let search_val = $('#search-bar').val();
+        let filter_val = $('#filter-bar').val();
+        fetchTodos(search = search_val, filter = filter_val);
+    })
+
+    //filter-bar
+    $('#filter-bar').on("input", function () {
+        let search_val = $('#search-bar').val();
+        let filter_val = $('#filter-bar').val();
+        fetchTodos(search = search_val, filter = filter_val);
+    })
 
     // Fetch todos when page loads
     fetchTodos();

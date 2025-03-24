@@ -6,6 +6,7 @@ from .models import Todo
 from .form import TodoForm
 from typing import Dict, Any, Union, List
 from asgiref.sync import sync_to_async
+from django.db.models import Q
 
 
 # Create your views here.
@@ -22,20 +23,25 @@ async def index(request):
     # Render asynchronously
     return await sync_to_async(render)(request, "todo_app/todo.html", context=context)
 
+
 async def get_todos(request: HttpRequest) -> JsonResponse:
-    """Asynchronously fetch and return a list of to-do items in JSON format.
-
-    Args:
-        request (HttpRequest): The HTTP request object.
-
-    Returns:
-        JsonResponse: A JSON response containing a list of to-do items with
-        their details such as ID, title, priority, due date, status, and timestamps.
-    """
+    """Asynchronously fetch and return a list of to-do items in JSON format."""
     try:
-        # Fetch data asynchronously
+        search: str = request.GET.get("search", "").strip()
+        priority_filter: str = request.GET.get("filter", "").strip()
+
+        # Construct the filter condition
+        filters = Q()
+        if search:
+            # Match title starting with search value
+            filters &= Q(title__startswith=search)
+        if priority_filter:
+            # Match priority level
+            filters &= Q(priority_level=priority_filter)
+
+        # Fetch filtered data asynchronously
         todo_data: List[Dict[str, Any]] = await sync_to_async(list)(
-            Todo.objects.all().values(
+            Todo.objects.filter(filters).values(
                 "todo_id",
                 "title",
                 "priority_level",
@@ -46,6 +52,7 @@ async def get_todos(request: HttpRequest) -> JsonResponse:
             )
         )
 
+        # Mapping for priority and status labels
         priority_map: Dict[str, str] = {
             "low": "Low", "medium": "Medium", "high": "High"}
         status_map: Dict[str, str] = {
@@ -62,10 +69,10 @@ async def get_todos(request: HttpRequest) -> JsonResponse:
             todo["status"] = status_map.get(
                 todo.get("status"), todo.get("status"))
 
-        responseData: Dict[str, List[Dict[str, Any]]] = {"todo": todo_data}
-        return JsonResponse(responseData)
+        return JsonResponse({"todo": todo_data})
+
     except Exception as e:
-        return JsonResponse({"Exception Occurred": str(e)})
+        return JsonResponse({"Exception Occurred": str(e)}, status=500)
 
 
 async def delete_todo(request: HttpRequest, todo_id: int) -> JsonResponse:

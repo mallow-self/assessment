@@ -37,23 +37,35 @@
 
 {% endblock form_fields %} 
 
-{% block todo_data %}
-<table class="table table-striped">
-    <thead class="table-dark">
-        <tr>
-            <th>S.No</th>
-            <th>Title</th>
-            <th>Priority</th>
-            <th>Due Date</th>
-            <th>Status</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody id="todoList">
-        <!-- Data from backend will be inserted here -->
-    </tbody>
-</table>
-{% endblock todo_data %}
+{% block todo_entry %}
+<div class="card mt-4 shadow-lg p-3">
+    <div class="row">
+        <h4 class="mb-3 col">Task List</h4>
+        <input class="asa col" type="text" name="" id="search-bar" placeholder="Search here">
+        <select class="asa col" name="filter-bar" id="filter-bar">
+            <option value="" selected>Priority Filter</option>
+            <option value="low">Low</option>
+            <option value="medium">Medium</option>
+            <option value="high">High</option>
+        </select>
+    </div>
+    <table class="table table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>S.No</th>
+                <th>Title</th>
+                <th>Priority</th>
+                <th>Due Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="todoList">
+            <!-- Data from backend will be inserted here -->
+        </tbody>
+    </table>
+</div>
+{% endblock todo_entry %}
 
 {% block staticLoad %}
 {% load static %}

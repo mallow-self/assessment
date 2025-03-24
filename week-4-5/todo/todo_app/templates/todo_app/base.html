@@ -20,10 +20,7 @@
         </div>
 
         <!-- Display To-Do List -->
-        <div class="card mt-4 shadow-lg p-3">
-            <h4 class="mb-3">Task List</h4>
-            {% block todo_data %}{% endblock todo_data %}
-        </div>
+        {% block todo_entry %}{% endblock todo_entry %}
 
         {% block modalForm %}{% endblock modalForm %}
     </div>
