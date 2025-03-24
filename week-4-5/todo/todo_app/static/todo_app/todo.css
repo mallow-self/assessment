@@ -1,0 +1,19 @@
+.btn-submit {
+    margin-top: 38px;
+    margin-left: 20px;
+    color: red;
+    /* Adjust according to form fields */
+}
+
+.asa {
+    margin: 10px;
+    border: 2px solid black;
+}
+
+body {
+    background: linear-gradient(135deg, #ff7dba, #b40379);
+}
+
+.main-title{
+    color:whitesmoke;
+}

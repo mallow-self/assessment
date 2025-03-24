@@ -1,6 +1,6 @@
 # Todo - Instructions
-1. Create a conda venv here(~/assessment/week-4):
-    - `conda create -n todo_env python=3.12`
+1. Create a conda venv here(~/assessment/week-4-5):
+    - `conda create -n todo_env_v2 python=3.12`
 2. Activate it
 3. Initialize poetry for the project:
     - `poetry install`

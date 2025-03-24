@@ -1,0 +1,127 @@
+<!-- child -->
+{% extends "todo_app/base.html" %} 
+
+
+{% block form_fields %}
+<!-- Title -->
+<form id="todoForm" class="row g-2 align-items-center" action=" {% url "todo:dfindex" %}" method="post">
+    {% csrf_token %}
+    <div class="col-md-3">
+        <label for="{{ form.title.id_for_label }}" class="form-label">Title</label>
+        {{ form.title }}
+    </div>
+    
+    <!-- Priority -->
+    <div class="col-md-2">
+        <label for="{{ form.priority_level.id_for_label }}" class="form-label">Priority</label>
+        {{ form.priority_level }}
+    </div>
+    
+    <!-- Due Date -->
+    <div class="col-md-2">
+        <label for="{{ form.due_date.id_for_label }}" class="form-label">Due Date</label>
+        {{ form.due_date }}
+    </div>
+    
+    <!-- Status -->
+    <div class="col-md-2">
+        <label for="{{ form.status.id_for_label }}" class="form-label">Status</label>
+        {{ form.status }}
+    </div>
+    
+    <!-- Submit Button -->
+    <div class="col-md-2 d-flex align-items-end btn-submit">
+        <button type="submit" class="btn btn-primary w-100">Add Task</button>
+    </div>
+</form>
+
+{% endblock form_fields %} 
+
+{% block todo_entry %}
+<div class="card mt-4 shadow-lg p-3">
+    <div class="row">
+        <h4 class="mb-3 col">Task List</h4>
+        <input class="asa col" type="text" name="" id="search-bar" placeholder="Search here">
+        <select class="asa col" name="filter-bar" id="filter-bar">
+            <option value="" selected>Priority Filter</option>
+            <option value="low">Low</option>
+            <option value="medium">Medium</option>
+            <option value="high">High</option>
+        </select>
+    </div>
+    <table class="table table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>S.No</th>
+                <th>Title</th>
+                <th>Priority</th>
+                <th>Due Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="todoList">
+            <!-- Data from backend will be inserted here -->
+        </tbody>
+    </table>
+</div>
+{% endblock todo_entry %}
+
+{% block staticLoad %}
+{% load static %}
+{% endblock staticLoad %}
+{% block csslink %}
+<link rel="stylesheet" href="{% static "todo_app/todo.css" %}">
+{% endblock csslink %}
+
+{% block jslink %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="{% static "todo_app/todo.js" %}"></script>
+{% endblock jslink %}
+
+{% block modalForm %}
+<div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateModalLabel">Update Task</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="updateForm">
+                    <input type="hidden" id="updateTodoId">
+                    <div class="mb-3">
+                        <label for="updateTitle" class="form-label">Title</label>
+                        <input type="text" class="form-control" id="updateTitle" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="updatePriority" class="form-label">Priority</label>
+                        <select class="form-control" id="updatePriority">
+                            <option value="high">High</option>
+                            <option value="medium">Medium</option>
+                            <option value="low">Low</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="updateDueDate" class="form-label">Due Date</label>
+                        <input type="date" class="form-control" id="updateDueDate">
+                    </div>
+                    <div class="mb-3">
+                        <label for="updateStatus" class="form-label">Status</label>
+                        <select class="form-control" id="updateStatus">
+                            <option value="pending">Pending</option>
+                            <option value="in-progress">In Progress</option>
+                            <option value="completed">Completed</option>
+                            <option value="overdue">Overdue</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="saveUpdateBtn">Save Changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock modalForm %}
