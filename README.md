@@ -30,5 +30,5 @@
     - whether the user enters a dob within the current date.
     - whether the user selects a gender and preferred language.
 
-## Week 4 - Assessment:
+## Week 4 and 5 - Assessment:
 - [Refer](./week-4-5/README.md)

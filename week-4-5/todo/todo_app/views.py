@@ -1,12 +1,15 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse, HttpRequest, HttpResponseRedirect, HttpResponse
 from .models import Todo
-from typing import Dict, Any, Union
-
+from .form import TodoForm
+from typing import Dict, Any, Union, List
+from asgiref.sync import sync_to_async
 
 # Create your views here.
-def list_todo(request: HttpRequest) -> HttpRequest:
-    """Render the to-do list page.
+
+
+async def list_todo(request: HttpRequest) -> HttpRequest:
+    """Render the to-do list page. Asynchronous doesn't have any real benefits, Just for future-proofing.
 
     Args:
         request (HttpRequest): The HTTP request object.
@@ -16,8 +19,48 @@ def list_todo(request: HttpRequest) -> HttpRequest:
     """
     return render(request, "todo_app/index.html")
 
-def get_todos(request: HttpRequest) -> JsonResponse:
-    """Fetch and return a list of to-do items in JSON format.
+# def get_todos(request: HttpRequest) -> JsonResponse:
+#     """Fetch and return a list of to-do items in JSON format.
+
+#     Args:
+#         request (HttpRequest): The HTTP request object.
+
+#     Returns:
+#         JsonResponse: A JSON response containing a list of to-do items with
+#         their details such as ID, title, priority, due date, status, and timestamps.
+#     """
+#     try:
+#         todo_data: list[Dict[str, Any]] = list(
+#             Todo.objects.all().values(
+#                 "todo_id",
+#                 "title",
+#                 "priority_level",
+#                 "due_date",
+#                 "status",
+#                 "created_at",
+#                 "updated_at",
+#             )
+#         )
+
+#         priority_map: Dict[str:str] = {"low": "Low", "medium": "Medium", "high": "High"}
+#         status_map: Dict[str:str] = {
+#             "pending": "Pending",
+#             "in-progress": "In Progress",
+#             "completed": "Completed",
+#             "overdue": "Overdue",
+#         }
+#         for todo in todo_data:
+#             todo["priority_level"] = priority_map.get(todo.get("priority_level"), todo.get("priority_level"))
+#             todo["status"] = status_map.get(todo.get("status"), todo.get("status"))
+
+#         responseData: Dict[str, list[Dict[str, Any]]] = {"todo": todo_data}
+#         return JsonResponse(responseData)
+#     except Exception as e:
+#         return JsonResponse({"Exception Occurred:":f"{e}"})
+
+
+async def get_todos(request: HttpRequest) -> JsonResponse:
+    """Asynchronously fetch and return a list of to-do items in JSON format.
 
     Args:
         request (HttpRequest): The HTTP request object.
@@ -27,7 +70,8 @@ def get_todos(request: HttpRequest) -> JsonResponse:
         their details such as ID, title, priority, due date, status, and timestamps.
     """
     try:
-        todo_data: list[Dict[str, Any]] = list(
+        # Fetch data asynchronously
+        todo_data: List[Dict[str, Any]] = await sync_to_async(list)(
             Todo.objects.all().values(
                 "todo_id",
                 "title",
@@ -39,21 +83,27 @@ def get_todos(request: HttpRequest) -> JsonResponse:
             )
         )
 
-        priority_map: Dict[str:str] = {"low": "Low", "medium": "Medium", "high": "High"}
-        status_map: Dict[str:str] = {
+        priority_map: Dict[str, str] = {
+            "low": "Low", "medium": "Medium", "high": "High"}
+        status_map: Dict[str, str] = {
             "pending": "Pending",
             "in-progress": "In Progress",
             "completed": "Completed",
             "overdue": "Overdue",
         }
+
+        # Modify data asynchronously
         for todo in todo_data:
-            todo["priority_level"] = priority_map.get(todo.get("priority_level"), todo.get("priority_level"))
-            todo["status"] = status_map.get(todo.get("status"), todo.get("status"))
-                
-        responseData: Dict[str, list[Dict[str, Any]]] = {"todo": todo_data}
+            todo["priority_level"] = priority_map.get(
+                todo.get("priority_level"), todo.get("priority_level"))
+            todo["status"] = status_map.get(
+                todo.get("status"), todo.get("status"))
+
+        responseData: Dict[str, List[Dict[str, Any]]] = {"todo": todo_data}
         return JsonResponse(responseData)
     except Exception as e:
-        return JsonResponse({"Exception Occurred:":f"{e}"})
+        return JsonResponse({"Exception Occurred": str(e)})
+
 
 def create_todo(request: HttpRequest) -> JsonResponse | HttpResponseRedirect:
     """Handle the creation of a new to-do item.
@@ -95,6 +145,7 @@ def create_todo(request: HttpRequest) -> JsonResponse | HttpResponseRedirect:
 
     return JsonResponse({"error": "Invalid request"}, status=400)
 
+
 def create(request: HttpRequest) -> HttpResponse:
     """Render the to-do creation page.
 
@@ -105,6 +156,7 @@ def create(request: HttpRequest) -> HttpResponse:
         HttpResponse: The rendered HTML page for creating a new to-do item.
     """
     return render(request, "todo_app/create.html")
+
 
 def delete_todo(request: HttpRequest, todo_id: int) -> JsonResponse:
     """Delete a specific to-do item.
@@ -135,6 +187,7 @@ def delete_todo(request: HttpRequest, todo_id: int) -> JsonResponse:
 
     return JsonResponse({"error": "Invalid request"}, status=400)
 
+
 def edit(request: HttpRequest, todo_id: int) -> HttpResponse | JsonResponse:
     """Render the to-do edit page with existing details.
 
@@ -150,7 +203,8 @@ def edit(request: HttpRequest, todo_id: int) -> HttpResponse | JsonResponse:
     """
     try:
         todo = get_object_or_404(Todo, todo_id=todo_id)
-        due_date_str: str = todo.due_date.strftime("%Y-%m-%d") if todo.due_date else ""
+        due_date_str: str = todo.due_date.strftime(
+            "%Y-%m-%d") if todo.due_date else ""
         context: Dict[str, Any] = {
             "todo_id": todo.todo_id,
             "title": todo.title,
@@ -161,6 +215,7 @@ def edit(request: HttpRequest, todo_id: int) -> HttpResponse | JsonResponse:
         return render(request, "todo_app/edit.html", context)
     except Exception as e:
         return JsonResponse({"Exception Occurred:": f"{e}"})
+
 
 def update_todo(request: HttpRequest, todo_id: int) -> Union[JsonResponse, HttpResponse]:
     """Update an existing to-do item.
@@ -203,3 +258,30 @@ def update_todo(request: HttpRequest, todo_id: int) -> Union[JsonResponse, HttpR
             return JsonResponse({"server-error": f"{e}"}, status=500)
 
     return JsonResponse({"error": "Invalid request"}, status=400)
+
+
+async def todo_form(request: HttpRequest):
+    if request.method == "POST":
+        form = TodoForm(request.POST)
+        if form.is_valid():
+            await sync_to_async(form.save)()
+            return JsonResponse({"message": "Successfully created form"})
+        else:
+            return JsonResponse({"message": "Invalid data", "errors": form.errors}, status=400)
+    form = TodoForm()
+    context = {"form": form}
+    # Render asynchronously
+    return await sync_to_async(render)(request, "todo_app/todoForm.html", context=context)
+
+async def dfindex(request):
+    if request.method == "POST":
+        form = TodoForm(request.POST)
+        if form.is_valid():
+            await sync_to_async(form.save)()
+            return JsonResponse({"message": "Successfully created form"})
+        else:
+            return JsonResponse({"message": "Invalid data", "errors": form.errors}, status=400)
+    form = TodoForm()
+    context = {"form": form}
+    # Render asynchronously
+    return await sync_to_async(render)(request, "todo_app/todo.html", context=context)

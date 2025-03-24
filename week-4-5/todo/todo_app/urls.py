@@ -10,4 +10,7 @@ urlpatterns = [
     path("delete/<int:todo_id>/", views.delete_todo, name="delete_todo"),
     path("edit/<int:todo_id>/", views.edit, name="edit_form"),
     path("update/<int:todo_id>/", views.update_todo, name="update_todo"),
+    #django forms
+    path("dfcreate/",views.todo_form,name="django_list"),
+    path("dfindex/",views.dfindex,name="dfindex")
 ]

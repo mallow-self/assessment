@@ -26,12 +26,14 @@ class Todo(models.Model):
     """
 
     PRIORITY_CHOICES: List[Tuple[str, str]] = [
+        ("","Select a Priority"),
         ("high", "High"),
         ("medium", "Medium"),
         ("low", "Low"),
     ]
 
     STATUS_CHOICES: List[Tuple[str, str]] = [
+        ("", "Select a Status"),
         ("pending", "Pending"),
         ("in-progress", "In Progress"),
         ("completed", "Completed"),
