@@ -8,8 +8,3 @@
     - `python3 manage.py runserver`
 
 ---
-
-1. converted get_todo to asynchronous
-2. converted index to async
-3. django forms:
-    - creating forms.py
