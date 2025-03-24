@@ -41,6 +41,7 @@
 <table class="table table-striped">
     <thead class="table-dark">
         <tr>
+            <th>S.No</th>
             <th>Title</th>
             <th>Priority</th>
             <th>Due Date</th>
@@ -54,13 +55,14 @@
 </table>
 {% endblock todo_data %}
 
-
+{% block staticLoad %}
+{% load static %}
+{% endblock staticLoad %}
 {% block csslink %}
-<style>
-        .btn-submit {
-            margin-top: 38px;
-            margin-left: 20px;
-            color: red; /* Adjust according to form fields */
-        }
-</style>
+<link rel="stylesheet" href="{% static "todo_app/todo.css" %}">
 {% endblock csslink %}
+
+{% block jslink %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="{% static "todo_app/todo.js" %}"></script>
+{% endblock jslink %}

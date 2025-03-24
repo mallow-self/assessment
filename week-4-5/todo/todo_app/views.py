@@ -176,7 +176,7 @@ def delete_todo(request: HttpRequest, todo_id: int) -> JsonResponse:
     """
     todo = get_object_or_404(Todo, todo_id=todo_id)
 
-    if request.method == "POST":
+    if request.method == "DELETE":
         try:
             todo.delete()
             return JsonResponse(
@@ -278,7 +278,7 @@ async def dfindex(request):
         form = TodoForm(request.POST)
         if form.is_valid():
             await sync_to_async(form.save)()
-            return JsonResponse({"message": "Successfully created form"})
+            redirect('todo_app/todo.html')
         else:
             return JsonResponse({"message": "Invalid data", "errors": form.errors}, status=400)
     form = TodoForm()

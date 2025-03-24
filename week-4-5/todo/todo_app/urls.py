@@ -4,7 +4,6 @@ from . import views
 app_name = "todo"
 urlpatterns = [
     path("", views.list_todo, name="list"),
-    path("todos/", views.get_todos, name="get_todos"),
     path("create/", views.create, name="create_form"),
     path("create-todo/", views.create_todo, name="create_todo"),
     path("delete/<int:todo_id>/", views.delete_todo, name="delete_todo"),
@@ -12,5 +11,7 @@ urlpatterns = [
     path("update/<int:todo_id>/", views.update_todo, name="update_todo"),
     #django forms
     path("dfcreate/",views.todo_form,name="django_list"),
-    path("dfindex/",views.dfindex,name="dfindex")
+    path("dfindex/",views.dfindex,name="dfindex"),
+    path("dfindex/todos/", views.get_todos, name="get_todos"),
+    path("dfindex/delete/<int:todo_id>/", views.delete_todo, name="delete_todo"),
 ]
