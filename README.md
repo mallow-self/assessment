@@ -32,3 +32,6 @@
 
 ## Week 4 and 5 - Assessment:
 - [Refer](./week-4-5/README.md)
+
+## Week 6 - Assessment:
+- [Click Here](https://github.com/mallow-self/blog)
